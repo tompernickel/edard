@@ -15,7 +15,9 @@
             font-family: monospace;
             font-size: 3rem;
             color: #333;
+            /* Hide the main content container initially if we are flashing the image */
         }
+
         .container {
             display: flex;
             align-items: center;
@@ -24,29 +26,36 @@
             border: 2px solid #333;
             border-radius: 10px;
             background-color: #fff;
+            z-index: 1; /* Ensure time is above body background */
         }
-        .flash-image {
-            margin-left: 20px;
-            /* Set the size of your image here */
-            width: 100px; 
-            height: auto; /* Maintains aspect ratio */
-            /* Initially hide the image */
-            display: none; 
+        
+        /* New styles for the full-screen image overlay */
+        .full-screen-image {
+            display: none; /* Hidden by default */
+            position: fixed; /* Positions it relative to the browser window */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* This makes the image cover the entire screen without stretching */
+            z-index: 10; /* Ensures the image is on top of everything else */
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- The time display container -->
+    <div class="container" id="time-container">
         <div class="time-display">
             <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
         </div>
-        <!-- REPLACE 'my_image_filename.png' with your actual file name -->
-        <img id="flashable-image" class="flash-image" src="RLS1997.48.1449.jpg" alt="Flashing Image">
     </div>
+    
+    <!-- The full-screen image element -->
+    <img id="flashable-image" class="full-screen-image" src="RLS1997.48.1449.jpg" alt="Flashing Image">
 
     <script>
         function updateClock() {
-            // Get current time in KST (Tuesday, November 25, 2025 at 10:01 AM KST)
+            // Your existing time display logic
             const now = new Date();
             const options = {
                 hour: '2-digit',
@@ -66,14 +75,19 @@
 
         function flashImage() {
             const imageElement = document.getElementById('flashable-image');
-            
-            // Show the image
-            imageElement.style.display = 'inline';
+            const timeContainer = document.getElementById('time-container');
 
-            // Hide the image after 0.5 seconds (500 milliseconds)
+            // Hide the time display container
+            timeContainer.style.display = 'none';
+
+            // Show the full-screen image
+            imageElement.style.display = 'block';
+
+            // Hide the image and restore the time display after 0.5 seconds (500 milliseconds)
             setTimeout(() => {
                 imageElement.style.display = 'none';
-            }, 2000); // 500ms duration
+                timeContainer.style.display = 'flex'; // Restore time display
+            }, 500); // 0.5s duration
         }
 
         // Initialize clock and flashing behavior
