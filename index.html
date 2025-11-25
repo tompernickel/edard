@@ -54,22 +54,22 @@
 
     <script>
         // Define the array of 5 image filenames you want to use
-        // Make sure you have these files (e.g., image1.png, image2.png, etc.) in your directory
         const images = ['blub.png', 'fish.JPG', 'wowzah.PNG', 'yawn.png', 'yawnn.jpg'];
 
         function updateClock() {
             const now = new Date();
-            const options = {
+            // We use the Intl.DateTimeFormat object to reliably get components as strings
+            const formatter = new Intl.DateTimeFormat('en-GB', {
                 hour: '2-digit',
                 minute: '2-digit',
                 second: '2-digit',
                 hour12: false, 
                 timeZone: 'Asia/Seoul'
-            };
-            
-            const hours = now.toLocaleTimeString('en-GB', { ...options, hour: '2-digit' });
-            const minutes = now.toLocaleTimeString('en-GB', { ...options, minute: '2-digit' });
-            const seconds = now.toLocaleTimeString('en-GB', { ...options, second: '2-digit' });
+            });
+
+            // Format the time and extract hours, minutes, and seconds cleanly
+            const formattedTime = formatter.format(now);
+            const [hours, minutes, seconds] = formattedTime.split(':');
 
             document.getElementById('hours').textContent = hours;
             document.getElementById('minutes').textContent = minutes;
