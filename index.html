@@ -15,7 +15,6 @@
             font-family: monospace;
             font-size: 3rem;
             color: #333;
-            /* Hide the main content container initially if we are flashing the image */
         }
 
         .container {
@@ -51,11 +50,14 @@
     </div>
     
     <!-- The full-screen image element -->
-    <img id="flashable-image" class="full-screen-image" src="yawn.png" alt="Flashing Image">
+    <img id="flashable-image" class="full-screen-image" src="" alt="Flashing Image">
 
     <script>
+        // Define the array of 5 image filenames you want to use
+        // Make sure you have these files (e.g., image1.png, image2.png, etc.) in your directory
+        const images = ['blub.png', 'fish.JPG', 'wowzah.PNG', 'yawn.png', 'yawnn.jpg'];
+
         function updateClock() {
-            // Your existing time display logic
             const now = new Date();
             const options = {
                 hour: '2-digit',
@@ -65,8 +67,9 @@
                 timeZone: 'Asia/Seoul'
             };
             
-            const kstTime = now.toLocaleTimeString('en-GB', options);
-            const [hours, minutes, seconds] = kstTime.split(':');
+            const hours = now.toLocaleTimeString('en-GB', { ...options, hour: '2-digit' });
+            const minutes = now.toLocaleTimeString('en-GB', { ...options, minute: '2-digit' });
+            const seconds = now.toLocaleTimeString('en-GB', { ...options, second: '2-digit' });
 
             document.getElementById('hours').textContent = hours;
             document.getElementById('minutes').textContent = minutes;
@@ -77,25 +80,28 @@
             const imageElement = document.getElementById('flashable-image');
             const timeContainer = document.getElementById('time-container');
 
-            // Hide the time display container
-            timeContainer.style.display = 'none';
+            // 1. Select a random image from the 5 available options
+            const randomIndex = Math.floor(Math.random() * images.length);
+            const randomImageSrc = images[randomIndex];
+            imageElement.src = randomImageSrc;
 
-            // Show the full-screen image
+            // 2. Hide the time display and show the image
+            timeContainer.style.display = 'none';
             imageElement.style.display = 'block';
 
-            // Hide the image and restore the time display after 0.5 seconds (500 milliseconds)
+            // 3. Hide the image and restore the time display after 1.5 seconds (1500 milliseconds)
             setTimeout(() => {
                 imageElement.style.display = 'none';
                 timeContainer.style.display = 'flex'; // Restore time display
-            }, 500); // 0.5s duration
+            }, 1500); // Duration: 1.5s
         }
 
         // Initialize clock and flashing behavior
         updateClock();
         setInterval(updateClock, 1000);
 
-        // Flash the image every 10 seconds (10000 milliseconds)
-        setInterval(flashImage, 3000); 
+        // Flash a random image every 4 seconds (4000 milliseconds)
+        setInterval(flashImage, 4000); 
     </script>
 </body>
 </html>
