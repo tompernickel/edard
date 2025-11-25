@@ -1,1 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current KST Time</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            font-family: monospace;
+            font-size: 3rem;
+            color: #333;
+        }
+        .time-display {
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="time-display">
+        <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span> KST
+    </div>
 
+    <script>
+        function updateKSTClock() {
+            // Use Intl.DateTimeFormat for reliable timezone conversion
+            const now = new Date();
+            const options = {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false, // 24-hour format
+                timeZone: 'Asia/Seoul'
+            };
+            
+            // Format the time string and extract components
+            const kstTime = now.toLocaleTimeString('en-GB', options); // en-GB ensures 24h format with colons
+            const [hours, minutes, seconds] = kstTime.split(':');
+
+            // Update the HTML elements
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+
+        // Update the clock immediately upon load
+        updateKSTClock();
+        // Update the clock every second
+        setInterval(updateKSTClock, 1000);
+    </script>
+</body>
+</html>
